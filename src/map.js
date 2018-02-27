@@ -1,6 +1,13 @@
 /* global ol */
-
 import { map as mapConfig } from 'config'
+/*
+import MousePosition from 'ol/control/mouseposition'
+import coordinate from 'ol/coordinate'
+import control from 'ol/control'
+import proj from 'ol/proj'
+import View from 'ol/View'
+import Map from 'ol/Map'
+*/
 
 const mousePositionControl = new ol.control.MousePosition({
   coordinateFormat: ol.coordinate.createStringXY(4),

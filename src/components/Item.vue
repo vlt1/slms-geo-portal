@@ -123,7 +123,7 @@ export default {
       return !this.conf.parent
     },
     hasLayers() {
-      return !!this.conf.layers.length
+      return !!this.conf.layers && !!this.conf.layers.length
     },
     hasStatistics() {
       return !!this.conf.layers && this.conf.layers.some(l => l.statistics)
