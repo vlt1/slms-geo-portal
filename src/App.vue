@@ -18,17 +18,18 @@
 
     <v-dialog />
     
-    <modal name="example-modal"
+    <modal name="iframe-modal"
          transition="nice-modal-fade"
          :min-width="200"
          :min-height="200"
+         :width="710"
+         :height="850"
          :delay="100"
          :adaptive="adaptive"
          :resizable="resizable"
          :draggable="draggable">
-      <div class="example-modal-content">
-        Hello
-        <input placeholder="Email">
+      <div class="iframe-modal-content">
+        <iframe src="static/configuration/loc/en/html/howto.html" width=700px height=840px><b>Welcome to Gonini.org!</b></iframe>
       </div>
     </modal>
   </div>
@@ -70,8 +71,8 @@ export default {
       user: auth.user,
       showConsole: false,
       llLogos: logos.ll,
-      resizable: false,
-      adaptive: false,
+      resizable: true,
+      adaptive: true,
       draggable: false
     }
   },
@@ -86,7 +87,8 @@ export default {
     }
   },
   mounted() {
-    this.showBasicDialog()
+    // this.showBasicDialog();
+    this.show(true, true, false)
   },
   methods: {
     loadEditor() {
@@ -98,6 +100,18 @@ export default {
     showBasicDialog() {
       this.$modal.show('dialog', {
         text: '<b>Welcome to Gonini.org!</b>'
+      })
+    },
+    show(resizable, adaptive, draggable) {
+      this.resizable = resizable
+      this.adaptive = adaptive
+      this.draggable = draggable
+      /*
+        $nextTick is required because the data model with new
+        "resizable, adaptive, draggable" values is not updated yet.. eh
+      */
+      this.$nextTick(() => {
+        this.$modal.show('iframe-modal')
       })
     }
   }
