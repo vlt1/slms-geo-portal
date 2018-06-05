@@ -44,5 +44,10 @@ window.globalConf = {
         size: { height: 35 }
       }
     ]
+  },
+  wfsSearchConfig: {
+    layersToQuery: ['ws1:layer1', 'ws1:layer2', 'ws2:layer3'],
+    attributesToFilter: ['attributeOfLayer1', 'anotherAttribute', 'ChangeThisValues'],
+    baseURL: 'geoserver/ows'
   }
 }

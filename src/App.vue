@@ -32,6 +32,8 @@
         <iframe src="static/configuration/loc/en/html/howto.html" width=700px height=840px><b>Welcome to Gonini.org!</b></iframe>
       </div>
     </modal>
+
+    <search></search>
   </div>
 </template>
 
@@ -47,6 +49,7 @@ import Feedback from './components/Feedback'
 import KMLOverlay from './components/KMLOverlay'
 import Logos from './components/Logos'
 import Measure from './components/Measure'
+import Search from './components/Search'
 
 import { logos } from 'config'
 
@@ -63,7 +66,8 @@ export default {
     Feedback,
     KMLOverlay,
     Measure,
-    Logos
+    Logos,
+    Search
     // EditorConsole
   },
   data() {
