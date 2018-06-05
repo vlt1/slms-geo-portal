@@ -7,7 +7,7 @@
       <h1 slot="header">{{$t("featureInfo.attributes")}}</h1>
       <div slot="body">
         <table>
-          <tr v-for="attr in popupAttributes">
+          <tr v-for="attr in popupAttributes" :key="attr.id">
             <th>{{attr.label}}</th>
             <td>{{attr.value}}</td>
           </tr>
@@ -18,7 +18,7 @@
       <a href="#" id="popup-closer" class="ol-popup-closer"></a>
       <ul id="popup-content">
         <p class="caption">{{$t("featureInfo.moreData")}}</p>
-        <li class="statsLink" v-for="(stat, i) in statisticsConfs" @click="showStatistics(stat, statisticsFeatures[i])">{{statisticsLabels[i]}}</li>
+        <li class="statsLink" v-for="(stat, i) in statisticsConfs" :key="i" @click="showStatistics(stat, statisticsFeatures[i])">{{statisticsLabels[i]}}</li>
       </ul>
     </div>
   </span>

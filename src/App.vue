@@ -15,6 +15,22 @@
     <KMLOverlay></KMLOverlay>
     <Logos id="ll_logos" :logosList="llLogos"></Logos>
     <measure></measure>
+
+    <v-dialog />
+    
+    <modal name="example-modal"
+         transition="nice-modal-fade"
+         :min-width="200"
+         :min-height="200"
+         :delay="100"
+         :adaptive="adaptive"
+         :resizable="resizable"
+         :draggable="draggable">
+      <div class="example-modal-content">
+        Hello
+        <input placeholder="Email">
+      </div>
+    </modal>
   </div>
 </template>
 
@@ -53,7 +69,10 @@ export default {
     return {
       user: auth.user,
       showConsole: false,
-      llLogos: logos.ll
+      llLogos: logos.ll,
+      resizable: false,
+      adaptive: false,
+      draggable: false
     }
   },
   created() {
@@ -66,12 +85,20 @@ export default {
       else this.showConsole = false
     }
   },
+  mounted() {
+    this.showBasicDialog()
+  },
   methods: {
     loadEditor() {
       require.ensure(['./components/edit/EditorConsole'], require => {
         Vue.component('EditorConsole', require('./components/edit/EditorConsole'))
         this.showConsole = true
       }, 'editing-chunk')
+    },
+    showBasicDialog() {
+      this.$modal.show('dialog', {
+        text: '<b>Welcome to Gonini.org!</b>'
+      })
     }
   }
 }
