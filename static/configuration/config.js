@@ -18,7 +18,7 @@ window.globalConf = {
     restoreVersionUrl: 'protected/layers_conf/restore_version'
   },
   feedbackApi: {
-    feedbackUrl: 'http://localhost:3001/feedback',
+    feedbackUrl: 'http://168.195.218.144/feedback',
     feedbackCategories: [
       'Thematic mapping and Monitoring',
       'Forest Offences',
