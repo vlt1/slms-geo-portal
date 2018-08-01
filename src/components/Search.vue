@@ -16,10 +16,11 @@
 </template>
 
 <script>
-/* global ol */
+
 import httpRequest from '../httpRequest'
 import SearchResult from './SearchResult'
 import map from '../map'
+import { fromLonLat } from 'ol/proj'
 import { wfsSearchConfig } from 'config'
 
 export default {
@@ -38,7 +39,7 @@ export default {
   methods: {
     clickHandler: function(clickedObject) {
       if (clickedObject && clickedObject.location) {
-        map.getView().animate({ zoom: 12 }, { center: ol.proj.fromLonLat(clickedObject.location) })
+        map.getView().animate({ zoom: 12 }, { center: fromLonLat(clickedObject.location) })
       }
     },
     goSearching: function(e) {
