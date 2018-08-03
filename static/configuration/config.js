@@ -43,8 +43,8 @@ window.globalConf = {
     ]
   },
   wfsSearchConfig: {
-    layersToQuery: ['gonini:infrastructuur_table', 'gonini:terreinen', 'gonini:settlements'],
-    attributesToFilter: ['str_naam', 'cc_code', 'district'],
+    layersToQuery: ['gonini:infrastructuur_table', 'gonini:terreinen', 'gonini:settlements', 'gonini:Hydrography_Name', 'gonini:terreinen'],
+    attributesToFilter: ['str_naam', 'cc_code', 'name', 'name', 'naam'],
     baseURL: 'geoserver/ows'
   }
 }
