@@ -20,7 +20,8 @@
 import httpRequest from '../httpRequest'
 import SearchResult from './SearchResult'
 import map from '../map'
-import { fromLonLat } from 'ol/proj'
+import { transformExtent } from 'ol/proj'
+import GeoJSON from 'ol/format/GeoJSON'
 import { wfsSearchConfig } from 'config'
 
 export default {
@@ -38,8 +39,13 @@ export default {
   },
   methods: {
     clickHandler: function(clickedObject) {
-      if (clickedObject && clickedObject.location) {
-        map.getView().animate({ zoom: 12 }, { center: fromLonLat(clickedObject.location) })
+      if (clickedObject && clickedObject.extent) {
+        map.getView().fit(
+          transformExtent(clickedObject.extent, 'EPSG:4326', 'EPSG:3857'),
+          {
+            size: map.getSize(),
+            maxZoom: 19
+          })
       }
     },
     goSearching: function(e) {
@@ -66,6 +72,7 @@ export default {
 
         if (wfsResponse.features) {
           this.results = []
+          const geojsonReader = new GeoJSON()
           wfsResponse.features.forEach(function(element) {
             if (element.geometry && element.geometry.coordinates && element.properties && element.id) {
               const newres = {}
@@ -73,17 +80,12 @@ export default {
                 const featureTypeString = (layer.indexOf(':') > -1) ? layer.split(':')[1] : layer
                 if (element.id.indexOf(featureTypeString) > -1) {
                   newres.fromtable = layer
-                  newres.title = element.properties[wfsSearchConfig.attributesToFilter[idx]]
+                  if (!newres.title || newres.title.indexOf(searchterm) === -1) {
+                    newres.title = element.properties[wfsSearchConfig.attributesToFilter[idx]]
+                  }
                 }
               })
-
-              if (element.geometry.type.indexOf('olygon') > -1) {
-                newres.location = element.geometry.coordinates[0][0][0]
-              } else if (element.geometry.type.indexOf('Point') > -1) {
-                newres.location = element.geometry.coordinates
-              } else {
-                newres.location = element.geometry.coordinates[0][0]
-              }
+              newres.extent = (geojsonReader.readFeature(element)).getGeometry().getExtent()
               this.results.push(newres)
             }
           }, this)
