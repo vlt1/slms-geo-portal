@@ -23,7 +23,7 @@ window.globalConf = {
     feedbackUrl: 'https://gonini.org/feedback',
     feedbackCategories: [
       'Thematic mapping and Monitoring',
-      'Forest Offences',
+      'Forest Information',
       'Information Dissemination (RTI)'
     ]
   },
