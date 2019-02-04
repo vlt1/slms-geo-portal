@@ -13,7 +13,7 @@
     <featureInfo></featureInfo>
     <feedback></feedback>
     <KMLOverlay></KMLOverlay>
-    <Logos id="ll_logos" :logosList="llLogos"></Logos>
+    <Logos v-if="llLogos" id="ll_logos" :logosList="llLogos"></Logos>
     <measure></measure>
 
     <v-dialog />
@@ -74,7 +74,7 @@ export default {
     return {
       user: auth.user,
       showConsole: false,
-      llLogos: logos.ll,
+      llLogos: logos && logos.ll || null,
       resizable: true,
       adaptive: true,
       draggable: false
