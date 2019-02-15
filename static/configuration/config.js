@@ -20,6 +20,7 @@ window.globalConf = {
     restoreVersionUrl: 'protected/layers_conf/restore_version'
   },
   feedbackApi: {
+    askForEmail: true,
     feedbackUrl: 'https://gonini.org/feedback',
     feedbackCategories: [
       'Thematic mapping and Monitoring',

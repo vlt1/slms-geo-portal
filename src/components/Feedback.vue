@@ -11,6 +11,15 @@
       <button type="button" class="small" :class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
       <button type="button" class="small" :class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
     </div>
+    <div id="sender" v-if="senderEmailIsRequired">
+      <input
+      id="message-sender"
+      v-model="senderEmail"
+      type="email"
+      name="email"
+      placeholder="Write your email"
+      >
+    </div>
     <div id="message">
       <textarea v-model="message" id="message-text" rows="6" placeholder="Write your message"></textarea>
     </div>
@@ -39,6 +48,8 @@ export default {
   data() {
     return {
       drawSource: null,
+      senderEmailIsRequired: feedbackApi.askForEmail || false,
+      senderEmail: '',
       message: '',
       draw: null,
       categories: feedbackApi.feedbackCategories,
@@ -96,7 +107,11 @@ export default {
         }
       }
 
-      const params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`
+      let params = `category=${this.selectedCategory}&message=${this.message}&kml=${kml}`
+
+      if (feedbackApi.askForEmail) {
+        params += `&sender=${this.senderEmail}`
+      }
 
       xhr.open('POST', feedbackApi.feedbackUrl, true)
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -107,7 +122,12 @@ export default {
       this.$store.commit('enable_feedback', { enable: false })
     },
     clear() {
-      drawLayer.getSource().clear()
+      drawLayer && drawLayer.getSource().clear()
+    },
+    validEmail(email) {
+      /* eslint no-useless-escape: "off" */
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(email)
     }
   },
   computed: {
@@ -115,6 +135,9 @@ export default {
       return !!(this.drawSource && this.drawSource.getFeatures().length)
     },
     disableSend: function() {
+      if (this.senderEmailIsRequired && !this.validEmail(this.senderEmail)) {
+        return true
+      }
       return !(this.drew && this.message !== '' && this.selectedCategory !== '')
     },
     ...mapState([
@@ -139,18 +162,19 @@ export default {
     margin: 0;
     z-index: 1000;
   }
+  #feedback > * {
+    margin-bottom: 10px;
+  }
   #message-text {
     font-size: 12px;
     resize: none;
     box-sizing: border-box;
     width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
   }
   #tools button:not(.active) {
     background-color: rgba(255, 255, 255, 0.7);
   }
-  #feedback-category {
-    margin-bottom: 10px;
+  #buttons {
+    margin-bottom: 0;
   }
 </style>
