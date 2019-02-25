@@ -1,7 +1,8 @@
 <template>
-  <modal v-if="showModal" @close="$store.commit('show_layer_info', { fileName: null, label: null })">
+  <modal v-if="showModal" @close="$store.commit('show_layer_info', { fileName: null, label: null, custom_content: null })">
     <h1 slot="header">{{label}}</h1>
-    <div slot="body" v-html="content"></div>
+    <div slot="body" v-html="content" v-if="content"></div>
+    <div slot="body" v-if="custom_content"></div>
   </modal>
 </template>
 
@@ -18,7 +19,8 @@ const processUrlTemplate = function(urlTemplate) {
 export default {
   data() {
     return {
-      showModal: false
+      showModal: false,
+      custom_content: null
     }
   },
   components: {
@@ -26,7 +28,7 @@ export default {
   },
   watch: {
     layerInfo: function(val) {
-      if (!val.fileName) {
+      if (!val.fileName && !val.custom_content) {
         this.showModal = false
       } else {
         this.label = val.label
@@ -35,9 +37,13 @@ export default {
           this.content = content
           this.showModal = true
         }
-        httpRequest('GET', processUrlTemplate(val.fileName))
-          .then(responseText => showContent(responseText))
-          .catch(error => showContent(`Cannot get layer info:\n${error.statusText}`))
+        if (!val.custom_content) {
+          httpRequest('GET', processUrlTemplate(val.fileName))
+            .then(responseText => showContent(responseText))
+            .catch(error => showContent(`Cannot get layer info:\n${error.statusText}`))
+        } else {
+          showContent(val.custom_content)
+        }
       }
     }
   },

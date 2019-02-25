@@ -17,7 +17,8 @@
     "dropKml": "Drop<br>your KML<br>file here"
   },
   "item": {
-    "statisticsAvailable": "Statistics available"
+    "statisticsAvailable": "Statistics available",
+    "downloadAvailable": "Data available for download"
   },
   "kmlOverlay": {
     "clear": "Clear"
