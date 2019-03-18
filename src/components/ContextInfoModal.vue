@@ -1,13 +1,13 @@
 <template>
-  <modal v-if="showModal" @close="$store.commit('show_layer_info', { fileName: null, label: null, custom_content: null })">
-    <h1 slot="header">{{label}}</h1>
-    <div slot="body" v-html="content" v-if="content"></div>
-    <div slot="body" v-if="custom_content"></div>
+  <modal name="context-info-modal" :draggable=true :resizable=true>
+    <div class="context-info-modal">
+      <button class="btn" @click="closeByName">X</button>
+      <div class="content" v-html="content" />
+    </div>
   </modal>
 </template>
 
 <script>
-import Modal from './Modal'
 import { mapState } from 'vuex'
 import httpRequest from '../httpRequest'
 import Vue from 'vue'
@@ -20,11 +20,14 @@ export default {
   data() {
     return {
       showModal: false,
-      custom_content: null
+      custom_content: null,
+      content: null
     }
   },
-  components: {
-    Modal
+  methods: {
+    closeByName() {
+      this.$modal.hide('context-info-modal')
+    }
   },
   watch: {
     layerInfo: function(val) {
@@ -36,7 +39,9 @@ export default {
         const showContent = content => {
           this.content = content
           this.showModal = true
+          this.$modal.show('context-info-modal')
         }
+
         if (!val.custom_content) {
           httpRequest('GET', processUrlTemplate(val.fileName))
             .then(responseText => showContent(responseText))
@@ -56,5 +61,8 @@ export default {
 <style scoped>
 h1 {
   font-size: 16px;
+}
+.context-info-modal .btn {
+  float: right
 }
 </style>

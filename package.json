@@ -13,9 +13,9 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
-    "ol": "^5.1.3",
+    "ol": "5.1.3",
     "vue": "^2.5.3",
-    "vue-js-modal": "^1.3.15"
+    "vue-js-modal": "1.3.28"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

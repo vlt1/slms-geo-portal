@@ -18,21 +18,6 @@
 
     <v-dialog />
     
-    <modal name="iframe-modal"
-         transition="nice-modal-fade"
-         :min-width="200"
-         :min-height="200"
-         :width="710"
-         :height="850"
-         :delay="100"
-         :adaptive="adaptive"
-         :resizable="resizable"
-         :draggable="draggable">
-      <div class="iframe-modal-content">
-        <iframe src="static/configuration/loc/en/html/howto.html" width=700px height=840px><b>Welcome to Gonini.org!</b></iframe>
-      </div>
-    </modal>
-
     <search></search>
   </div>
 </template>
@@ -77,7 +62,7 @@ export default {
       llLogos: logos && logos.ll || null,
       resizable: true,
       adaptive: true,
-      draggable: false
+      draggable: true
     }
   },
   created() {
@@ -91,8 +76,7 @@ export default {
     }
   },
   mounted() {
-    // this.showBasicDialog();
-    this.show(true, true, false)
+    this.show(true, true, true)
   },
   methods: {
     loadEditor() {
@@ -101,11 +85,7 @@ export default {
         this.showConsole = true
       }, 'editing-chunk')
     },
-    showBasicDialog() {
-      this.$modal.show('dialog', {
-        text: '<b>Welcome to Gonini.org!</b>'
-      })
-    },
+
     show(resizable, adaptive, draggable) {
       this.resizable = resizable
       this.adaptive = adaptive
@@ -115,7 +95,24 @@ export default {
         "resizable, adaptive, draggable" values is not updated yet.. eh
       */
       this.$nextTick(() => {
-        this.$modal.show('iframe-modal')
+        this.$modal.show({
+          template: `
+            <div class="iframe-modal-content">
+              <div>Welcome</div>
+              <iframe v-bind:src="iframesrc" width=100% height=100%><b>Welcome to Gonini.org!</b></iframe>
+            </div>
+          `,
+          props: ['iframesrc']
+        }, {
+          iframesrc: 'static/configuration/loc/en/html/howto.html'
+        }, {
+          transition: 'nice-modal-fade',
+          draggable: draggable,
+          adaptive: adaptive,
+          resizable: resizable,
+          width: 710,
+          height: 850
+        })
       })
     }
   }
@@ -150,5 +147,8 @@ body {
   position: absolute;
   bottom: 10px;
   left: 0px;
+}
+.iframe-modal-content{
+  height: 100%;
 }
 </style>

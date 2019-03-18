@@ -28,7 +28,8 @@ const httpGetParams = (function() {
 
 Vue.use(vmodal, {
   dialog: true,
-  dynamic: true
+  dynamic: true,
+  injectModalsContainer: true
 })
 
 // Initialize the internationalization plugin on the vue instance.
