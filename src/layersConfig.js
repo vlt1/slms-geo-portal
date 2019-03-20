@@ -62,6 +62,8 @@ export class Layer {
 
         return ret
       })
+
+      this.downloadLinks = layerConfig.downloadLinks
     }
 
     this.visible = !!layerConfig.visible !== false
@@ -160,7 +162,7 @@ class _Config {
     // Delete the contexts that are not in a group
     this.contexts = contexts.filter(c => this.groups.findById(c.id))
 
-    // Eelete the layers that are not in a context
+    // Delete the layers that are not in a context
     this.layers = layers.filter(l => this.contexts.some(c => c.layers.indexOf(l) !== -1))
 
     // // Mark layers that are not in a context (they will not be instantiated as OL layers)

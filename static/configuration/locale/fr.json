@@ -18,7 +18,8 @@
     "dropKml": "Déposez<br>votre fichier<br>KML ici"
   },
   "item": {
-    "statisticsAvailable": "Statistiques disponibles"
+    "statisticsAvailable": "Statistiques disponibles",
+    "downloadAvailable": "Données disponibles au téléchargement"
   },
   "kmlOverlay": {
     "clear": "Supprimer"
