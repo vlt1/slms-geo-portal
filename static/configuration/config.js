@@ -22,11 +22,10 @@ window.globalConf = {
   feedbackApi: {
     askForEmail: true,
     feedbackUrl: 'https://gonini.org/feedback',
-    feedbackCategories: [
-      'Thematic mapping and Monitoring',
-      'Forest Information',
-      'Information Dissemination (RTI)'
-    ]
+    drawOptions: [
+      'Point'
+    ],
+    drawDefault: 'Point'
   },
   logos: {
     ul: 'flag.gif',
