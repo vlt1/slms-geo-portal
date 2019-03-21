@@ -8,8 +8,8 @@
     </div>
     <div id="tools">
       Draw:
-      <button type="button" class="small" :class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
-      <button type="button" class="small" :class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
+      <button v-if="drawOptions.includes('Point')" type="button" class="small" :class="{ active: draw === 'Point' }" @click="setDrawTool('Point')">Points</button>
+      <button v-if="drawOptions.includes('Polygon')" type="button" class="small" :class="{ active: draw === 'Polygon' }" @click="setDrawTool('Polygon')">Polygons</button>
     </div>
     <div id="sender" v-if="senderEmailIsRequired">
       <input
@@ -53,7 +53,9 @@ export default {
       message: '',
       draw: null,
       categories: feedbackApi.feedbackCategories || [],
-      selectedCategory: ''
+      selectedCategory: '',
+      drawOptions: feedbackApi.drawOptions || ['Point', 'Polygon'],
+      drawDefault: feedbackApi.drawDefault || 'Polygon'
     }
   },
   watch: {
@@ -65,8 +67,11 @@ export default {
           source: this.drawSource,
           map: map
         })
-
-        this.draw = 'Polygon'
+        if (this.drawOptions.includes(this.drawDefault || 'Polygon')) {
+          this.draw = this.drawDefault || 'Polygon'
+        } else {
+          this.draw = this.drawOptions[0]
+        }
       } else {
         this.message = ''
         this.selectedCategory = ''
