@@ -1,6 +1,6 @@
 <template>
   <div id="feedback" v-if="enableFeedback">
-    <div id="feedback-category">
+    <div v-if="categories.length" id="feedback-category">
       <select v-model="selectedCategory">
         <option value="" disabled>{{$t("feedback.selectCategory")}}</option>
         <option v-for="cat in categories" :key="cat.id">{{cat}}</option>
@@ -52,7 +52,7 @@ export default {
       senderEmail: '',
       message: '',
       draw: null,
-      categories: feedbackApi.feedbackCategories,
+      categories: feedbackApi.feedbackCategories || [],
       selectedCategory: ''
     }
   },
@@ -135,10 +135,14 @@ export default {
       return !!(this.drawSource && this.drawSource.getFeatures().length)
     },
     disableSend: function() {
+      // A valid Email is required
       if (this.senderEmailIsRequired && !this.validEmail(this.senderEmail)) {
         return true
       }
-      return !(this.drew && this.message !== '' && this.selectedCategory !== '')
+      // If categories are configured, a category is required
+      // A message is required
+      // A drawing is required
+      return !(this.drew && this.message !== '' && !(this.categories.length !== 0 && this.selectedCategory === ''))
     },
     ...mapState([
       'enableFeedback'
