@@ -1,5 +1,5 @@
 <template>
-  <div id='search'>
+  <div id='search' v-if="wfsSearchConfig.layersToQuery">
     <form v-on:submit.prevent='noop'>
       <input type='text' v-model='searchText' v-on:keyup='goSearching' />
       <br /><br />
@@ -28,7 +28,8 @@ export default {
   data: function() {
     return {
       searchText: '',
-      results: []
+      results: [],
+      wfsSearchConfig: wfsSearchConfig
     }
   },
   mounted: function() {
@@ -58,6 +59,10 @@ export default {
       // do nothing
     },
     wfsSearch(searchterm) {
+      if (!wfsSearchConfig || !wfsSearchConfig.layersToQuery) {
+        alert('WFS Search is not correctly configured.\nPlease contact your system administrator')
+        return
+      }
       if (wfsSearchConfig.layersToQuery.lenght !== wfsSearchConfig.attributesToFilter.lenght) {
         alert('WFS Search attributes list lenght does not match the number of layers to query.\nPlease contact your system administrator')
         return
