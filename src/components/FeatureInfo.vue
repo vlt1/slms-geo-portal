@@ -68,7 +68,7 @@ const reflect = p => p.then(v => ({ v, layer: p.layer, status: 'fulfilled' }),
 
 const parser = new GeoJSON()
 
-const addResult = (statisticsConfs, statisticsLabels, statisticsFeatures, event, result) => {
+const displayResults = (statisticsConfs, statisticsLabels, statisticsFeatures, event, accumulator, result) => {
   const features = parser.readFeatures(result.v, { featureProjection: 'EPSG:3857' })
 
   if (features.length) {
@@ -86,10 +86,8 @@ const addResult = (statisticsConfs, statisticsLabels, statisticsFeatures, event,
         })
       }
     })
-    popup.setPosition(event.coordinate)
-  } else {
-    popup.setPosition(undefined)
   }
+  return accumulator + features.length
 }
 
 const clickHandler = function(event) {
@@ -123,9 +121,13 @@ const clickHandler = function(event) {
     })
     // When all the requests completed, filter the successful ones
     Promise.all(infoRequests.map(reflect)).then(function(results) {
-      results
-        .filter(x => x.status === 'fulfilled')
-        .forEach(addResult.bind(null, this.statisticsConfs, this.statisticsLabels, this.statisticsFeatures, event))
+      const fulfilled = results.filter(x => x.status === 'fulfilled')
+
+      if (fulfilled.reduce(displayResults.bind(null, this.statisticsConfs, this.statisticsLabels, this.statisticsFeatures, event), 0) > 0) {
+        popup.setPosition(event.coordinate)
+      } else {
+        popup.setPosition(undefined)
+      }
     }.bind(this)
     )
   }
