@@ -33,6 +33,11 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: { '^/gs': '' }
       },
+      '/geoserver': {
+        target: 'https://gonini.org/geoserver',
+        changeOrigin: true,
+        pathRewrite: { '^/geoserver': '' }
+      },
       '/charts': { target: 'http://www.rdc-snsf.org/portal/static/data/', changeOrigin: true },
       '/api': { target: 'http://localhost:3001', changeOrigin: true },
       '/geoserver/pdf': { target: 'http://rdc-snsf.org/', changeOrigin: true }

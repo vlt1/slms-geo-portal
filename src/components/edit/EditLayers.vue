@@ -218,10 +218,10 @@ export default {
           })
           this.getCapabilitiesError = false
         })
-        .catch(err => {
-          err // jslint expects error to be handled
-          this.getCapabilitiesError = true
-        })
+          .catch(err => {
+            err // jslint expects error to be handled
+            this.getCapabilitiesError = true
+          })
       }
     },
     addLayer(type) {

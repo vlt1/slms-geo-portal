@@ -1,24 +1,24 @@
 <template>
   <div id="app">
-    <mapPane></mapPane>
+    <mapPane />
     <div class="layers">
-      <layerSelector></layerSelector>
-      <editor-console v-if="showConsole"></editor-console>
+      <layerSelector />
+      <editor-console v-if="showConsole" />
     </div>
     <!-- Hide until language is first loaded, to avoid showing i18n placeholders -->
     <!-- Using v-show instead of v-if to optimize image loading -->
-    <banner v-show="this.$parent.loaded"></banner>
+    <banner v-show="this.$parent.loaded" />
 
-    <contextInfoModal></contextInfoModal>
-    <featureInfo></featureInfo>
-    <feedback></feedback>
-    <KMLOverlay></KMLOverlay>
-    <Logos v-if="llLogos" id="ll_logos" :logosList="llLogos"></Logos>
-    <measure></measure>
+    <contextInfoModal />
+    <featureInfo />
+    <feedback />
+    <KMLOverlay />
+    <Logos v-if="llLogos" id="ll_logos" :logosList="llLogos" />
+    <measure />
 
     <v-dialog />
-    
-    <search></search>
+
+    <search />
   </div>
 </template>
 
@@ -65,15 +65,15 @@ export default {
       draggable: true
     }
   },
-  created() {
-    this.$store.dispatch('fetchLayersConfig')
-    if (this.user.authenticated) this.loadEditor()
-  },
   watch: {
     'user.authenticated'() {
       if (this.user.authenticated) this.loadEditor()
       else this.showConsole = false
     }
+  },
+  created() {
+    this.$store.dispatch('fetchLayersConfig')
+    if (this.user.authenticated) this.loadEditor()
   },
   mounted() {
     if (welcomePage) {

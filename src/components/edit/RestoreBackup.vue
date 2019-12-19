@@ -3,10 +3,13 @@
     <h1 slot="header">Restore from backup</h1>
     <div slot="body">
       <ul>
-        <li v-for="backup in versions"
-            @click="setRestoreVersion(backup.version)"
-            :class="{ highlighted: backup.version === restoreVersion }" >
-          Version {{backup.version}} - {{backup.date}}
+        <li
+          v-for="(backup, index) in versions"
+          :key="`version-${index}`"
+          :class="{ highlighted: backup.version === restoreVersion }"
+          @click="setRestoreVersion(backup.version)"
+        >
+          Version {{ backup.version }} - {{ backup.date }}
         </li>
       </ul>
     </div>
@@ -21,17 +24,17 @@
 import Modal from '../Modal'
 
 export default {
-  data() {
-    return {
-      restoreVersion: Math.max.apply(null, this.backups.map(b => b.version)),
-      versions: this.backups.map(b => ({ version: b.version, date: new Date(b.date).toLocaleString() }))
-    }
-  },
   components: {
     Modal
   },
   props: {
     backups: Array
+  },
+  data() {
+    return {
+      restoreVersion: Math.max.apply(null, this.backups.map(b => b.version)),
+      versions: this.backups.map(b => ({ version: b.version, date: new Date(b.date).toLocaleString() }))
+    }
   },
   methods: {
     restore() {

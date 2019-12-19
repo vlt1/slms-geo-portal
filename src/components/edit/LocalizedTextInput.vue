@@ -1,12 +1,26 @@
 <template>
   <div class="label-edit">
-    <span id="label">{{label}}</span>
-    <div v-for="label in value">
-      <label>{{langName(label.language)}}:
-        <input type="text" v-model="label.label" :list="label.language">
-        <datalist v-if="options" :id="label.language">
-          <option v-for="option in options" :value="option">
-            {{option}}
+    <span id="label">{{ label }}</span>
+    <div
+      v-for="v in value"
+      :key="v.language"
+    >
+      <label>{{ langName(v.language) }}:
+        <input
+          v-model="v.label"
+          type="text"
+          :list="v.language"
+        >
+        <datalist
+          v-if="options"
+          :id="v.language"
+        >
+          <option
+            v-for="(option, index) in options"
+            :key="`opt-${index}`"
+            :value="option"
+          >
+            {{ option }}
           </option>
         </datalist>
       </label>

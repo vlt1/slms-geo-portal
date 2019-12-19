@@ -2,13 +2,22 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>SLMS Geoportal</title>
+    <title>GONINI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" type="text/css">
     <link rel="stylesheet" href="https://openlayers.org/en/latest/css/ol.css" type="text/css">
     <!-- Config parameters -->
-    <script src="/static/configuration/config.js"></script>
+    <script src="static/configuration/config.js"></script>
     <!-- IE9 compatibility for OL4 (requestAnimationFrame, Element.prototype.classList) and vuex (Promise) -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,Promise"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-72183700-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-72183700-2');
+    </script>
   </head>
   <body>
     <div id="app"></div>

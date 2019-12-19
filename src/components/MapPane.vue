@@ -68,10 +68,10 @@ export default {
     contexts(contexts) {
       this.contexts.forEach(context => {
         Object.values(OLProperty)
-        .filter(p => context.hasOwnProperty(p))
-        .forEach(p => {
-          context.layers.forEach(l => olLayers[l.id].set(p, context[p]))
-        })
+          .filter(p => context.hasOwnProperty(p))
+          .forEach(p => {
+            context.layers.forEach(l => olLayers[l.id].set(p, context[p]))
+          })
       })
     }
   },

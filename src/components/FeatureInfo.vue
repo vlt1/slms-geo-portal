@@ -2,28 +2,28 @@
   <span>
     <modal name="stats-modal" :draggable="true" :resizable=true :minWidth=250 :minHeight=220>
       <div class="modal-container">
-        <h1 class="modal-header">{{$t("featureInfo.info")}}</h1>
-        <iframe width=100% height=100% :src="statisticsUrl"/>
+        <h1 class="modal-header">{{ $t("featureInfo.info") }}</h1>
+        <iframe width=100% height=100% :src="statisticsUrl" />
       </div>
     </modal>
     <modal name="props-modal" :draggable="true" :resizable=true :minWidth=250 :minHeight=220>
       <div class="modal-container">
-        <h1 class="modal-header">{{$t("featureInfo.attributes")}}</h1>
+        <h1 class="modal-header">{{ $t("featureInfo.attributes") }}</h1>
         <div class="modal-body">
-        <table>
+          <table>
             <tr v-for="attr in popupAttributes" :key="attr.id">
-            <th>{{attr.label}}</th>
-            <td>{{attr.value}}</td>
-          </tr>
-        </table>
-      </div>
+              <th>{{ attr.label }}</th>
+              <td>{{ attr.value }}</td>
+            </tr>
+          </table>
+        </div>
       </div>
     </modal>
     <div id="popup" class="ol-popup">
-      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <a href="#" id="popup-closer" class="ol-popup-closer" />
       <ul id="popup-content">
-        <p class="caption">{{$t("featureInfo.moreData")}}</p>
-        <li class="statsLink" v-for="(stat, i) in statisticsConfs" :key="i" @click="showStatistics(stat, statisticsFeatures[i])">{{statisticsLabels[i]}}</li>
+        <p class="caption">{{ $t("featureInfo.moreData") }}</p>
+        <li class="statsLink" v-for="(stat, i) in statisticsConfs" :key="i" @click="showStatistics(stat, statisticsFeatures[i])">{{ statisticsLabels[i] }}</li>
       </ul>
     </div>
   </span>
@@ -61,8 +61,9 @@ const processUrlTemplate = function(urlTemplate, feature) {
 
 const parser = new GeoJSON()
 
-const reflect = p => p.then(v => ({ v, layer: p.layer, status: 'fulfilled' }),
-                             e => ({ e, layer: p.layer, status: 'rejected' }))
+const reflect = p => p.then(
+  v => ({ v, layer: p.layer, status: 'fulfilled' }),
+  e => ({ e, layer: p.layer, status: 'rejected' }))
 
 let container,
     closer,
@@ -144,6 +145,32 @@ export default {
       popupAttributes: null
     }
   },
+  computed: {
+    ...mapState([
+      'enableFeedback',
+      'measureActive',
+      'layers'
+    ]),
+    ...mapGetters([
+      'queryableLayers'
+    ])
+  },
+  watch: {
+    layers: {
+      immediate: true,
+      handler: function() {
+        // Store the click callback as a property as we will need to unlisten the click handler
+        if (!this.clickCallback) {
+          this.clickCallback = clickHandler.bind(this)
+        }
+
+        // Delete previous click handler (needed when editing and changing the layers array)
+        map.un('singleclick', this.clickCallback)
+
+        this.handlerKey = map.on('singleclick', this.clickCallback)
+      }
+    }
+  },
   mounted() {
     container = document.getElementById('popup')
     closer = document.getElementById('popup-closer')
@@ -164,22 +191,6 @@ export default {
       }
     })
     map.addOverlay(popup)
-  },
-  watch: {
-    layers: {
-      immediate: true,
-      handler: function() {
-        // Store the click callback as a property as we will need to unlisten the click handler
-        if (!this.clickCallback) {
-          this.clickCallback = clickHandler.bind(this)
-        }
-
-        // Delete previous click handler (needed when editing and changing the layers array)
-        map.un('singleclick', this.clickCallback)
-
-        this.handlerKey = map.on('singleclick', this.clickCallback)
-      }
-    }
   },
   methods: {
     showStatistics(statsConf, feature) {
@@ -217,16 +228,6 @@ export default {
           break
       }
     }
-  },
-  computed: {
-    ...mapState([
-      'enableFeedback',
-      'measureActive',
-      'layers'
-    ]),
-    ...mapGetters([
-      'queryableLayers'
-    ])
   }
 }
 </script>

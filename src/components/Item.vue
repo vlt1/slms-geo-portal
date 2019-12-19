@@ -5,23 +5,23 @@
       <!-- Open/close group button -->
       <span class="line icon">
         <icon class="open-button" :name="open ? 'minus-square-o' : 'plus-square-o'"></icon>
-        <span :class="{handle: editing}">{{isRoot ? $t("layerSelector.layers") : label}}</span>
+        <span :class="{handle: editing}">{{ isRoot ? $t("layerSelector.layers") : label }}</span>
       </span>
 
       <!-- Group info button -->
       <span class="info-link icon" v-if="conf.infoFile" @click.stop="showInfo">
         <icon name="info-circle"></icon>
       </span>
-      
-      <span class="counter">{{nActive ? '&lrm;[' + locNActive + '&lrm;]' : null}}</span>
+
+      <span class="counter">{{ nActive ? '&lrm;[' + locNActive + '&lrm;]' : null }}</span>
 
       <!-- Edit and delete group button -->
       <template v-if="editing && !isRoot">
         <span class="icon" @click.stop="editItem">
-          <icon class="icon edit" name="pencil-square-o"></icon>
+          <icon class="icon edit" name="pencil-square-o" />
         </span>
         <span class="icon" @click.stop="deleteItem">
-          <icon class="icon edit" name="trash-o"></icon>
+          <icon class="icon edit" name="trash-o" />
         </span>
       </template>
     </div>
@@ -30,8 +30,8 @@
       <!-- This item is a context -->
       <!-- Toggle context button -->
       <span class="icon" @click="toggleContent" v-if="hasLayers">
-        <icon v-if="open" class="open-button" name="caret-down"/>
-        <icon v-else class="open-button" name="caret-right"/>
+        <icon v-if="open" class="open-button" name="caret-down" />
+        <icon v-else class="open-button" name="caret-right" />
       </span>
 
       <!-- Layer toggle button -->
@@ -47,22 +47,21 @@
       </span>
 
       <!-- Legend toggle button -->
-      <span @click="toggleLegend" style="padding-left:2px;padding-right:2px" class="icon" v-if="conf.hasLegends" >
+      <span @click="toggleLegend" style="padding-left:2px;padding-right:2px" class="icon" v-if="conf.hasLegends">
         <icon class="legend-link" :class="{active}" name="th-list"></icon>
       </span>
 
       <img v-if="conf.inlineLegendUrl" class="inline-legend" :src="conf.inlineLegendUrl">
 
-      <span :class="{dimmed: !hasLayers, handle: editing}" @mouseover="highlightContext(true)" @mouseout="highlightContext(false)" @click="toggleActive">{{label}}</span>
+      <span :class="{dimmed: !hasLayers, handle: editing}" @mouseover="highlightContext(true)" @mouseout="highlightContext(false)" @click="toggleActive">{{ label }}</span>
 
       <!-- Context info button -->
       <span class="info-link icon" v-if="conf.infoFile" @click="showInfo">
         <icon name="info-circle"></icon>
       </span>
 
-
       <span class="times-button icon" v-if="this.conf.times && !!this.conf.times.length" @click="toggleTimeMenu" :class="{active: showTimeMenu}">
-        <icon name="clock-o"></icon> {{selectedTime.humanReadable}}
+        <icon name="clock-o"></icon> {{ selectedTime.humanReadable }}
       </span>
 
       <!-- Statistics button -->
@@ -297,18 +296,18 @@ export default {
       let downloadLinksHTML = `<div style="padding: 20px;"><div><b>${this.label} Downloads</b></div><br/><table>`
       !!this.conf.layers &&
         this.conf.layers
-        .forEach(
-          l => l.downloadLinks.forEach(
-            (d, downloadIndex) => {
-              const template = d.labels.find(l => l.language === Vue.i18n.locale()).label
-              downloadLinksHTML += '<tr><td><a href="' +
-               d.url + '" target=_blank>' +
-               (template
-                ? processTemplate(template, l)
-                : (l.name || 'Unnamed Layer') + ' Download #' + (downloadIndex + 1)) + '</a></td></tr>'
-            }
+          .forEach(
+            l => l.downloadLinks.forEach(
+              (d, downloadIndex) => {
+                const template = d.labels.find(l => l.language === Vue.i18n.locale()).label
+                downloadLinksHTML += '<tr><td><a href="' +
+                d.url + '" target=_blank>' +
+                (template
+                  ? processTemplate(template, l)
+                  : (l.name || 'Unnamed Layer') + ' Download #' + (downloadIndex + 1)) + '</a></td></tr>'
+              }
+            )
           )
-        )
       downloadLinksHTML += '</table></div>'
       this.$store.commit('show_layer_info', { label: 'Downloads', custom_content: downloadLinksHTML })
     },
@@ -397,7 +396,7 @@ ul {
     &.highlighted {
       color: $highlight-color;
     }
-    
+
     &:hover {
       color: $highlight-color;
     }
@@ -413,7 +412,6 @@ ul {
     color: #ffd600;
   }
 
- 
   &.statistics {
     color: #999;
   }

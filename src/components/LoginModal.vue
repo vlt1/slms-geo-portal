@@ -1,6 +1,8 @@
 <template>
   <modal v-if=show>
-    <h1 slot="header">{{error ? 'Error' : 'Login'}}</h1>
+    <h1 slot="header">
+      {{ error ? 'Error' : 'Login' }}
+    </h1>
     <div slot="body" class="body">
       <div v-if="error">
         <p>{{error}}</p>
@@ -38,6 +40,10 @@ import auth from '../auth'
 import Modal from './Modal'
 
 export default {
+  components: {
+    Modal
+  },
+  props: ['show'],
   data() {
     return {
       user: null,
@@ -45,10 +51,6 @@ export default {
       error: null
     }
   },
-  components: {
-    Modal
-  },
-  props: ['show'],
   methods: {
     submit(user, password) {
       const credentials = {
@@ -56,11 +58,11 @@ export default {
         password: this.password
       }
       auth.login(credentials, 'secretquote')
-          .then(user => {
-            this.$emit('disable')
-            this.user = this.password = this.error = null
-          })
-          .catch(function(error) { this.error = error.statusText }.bind(this))
+        .then(user => {
+          this.$emit('disable')
+          this.user = this.password = this.error = null
+        })
+        .catch(function(error) { this.error = error.statusText }.bind(this))
     },
     cancel() {
       this.$emit('disable')

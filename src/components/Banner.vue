@@ -1,16 +1,33 @@
 <template>
-  <div id="header" :class="{ danger: user.authenticated }">
+  <div
+    id="header"
+    :class="{ danger: user.authenticated }"
+  >
     <div id="title">
-      <h1 :class="{ hasSubtitle: $te('banner.subtitle') }">{{$t("banner.title")}}</h1>
-      <h2 v-if="$te('banner.subtitle')">{{$t("banner.subtitle")}}</h2>
+      <h1 :class="{ hasSubtitle: $te('banner.subtitle') }">
+        {{ $t("banner.title") }}
+      </h1>
+      <h2 v-if="$te('banner.subtitle')">
+        {{ $t("banner.subtitle") }}
+      </h2>
     </div>
-    <ul v-if="languages.length > 1" id="languageLinks" class="buttons">
-      <li v-for="language in languages" :key="language.id">
-        <span v-if="language.id === selectedLanguage" :href="'?lang=' + language.id">{{language.label}}</span>
-         <a v-else href="#" @click="setLanguage(language.id)">{{language.label}}</a>
+    <ul
+      v-if="languages.length > 1"
+      id="languageLinks"
+      class="buttons"
+    >
+      <li
+        v-for="language in languages"
+        :key="language.id"
+      >
+        <span v-if="language.id === selectedLanguage" :href="'?lang=' + language.id">{{ language.label }}</span>
+        <a v-else href="#" @click="setLanguage(language.id)">{{ language.label }}</a>
       </li>
     </ul>
-    <ul id="tools" class="buttons">
+    <ul
+      id="tools"
+      class="buttons"
+    >
       <li v-if="!user.authenticated">
         <a href="#" @click="showLoginDialog(true)">Admin</a>
       </li>
@@ -18,20 +35,20 @@
         <a id="logout-button" href="#" @click="logout">Logout</a>
       </li>
       <li>
-        <a href="#" @click.stop="enableFeedback">{{$t("banner.feedback")}}</a>
+        <a href="#" @click.stop="enableFeedback">{{ $t("banner.feedback") }}</a>
       </li>
       <li>
-        <a href="#" @click="enableUpload">{{$t("banner.uploadKml")}}</a>
+        <a href="#" @click="enableUpload">{{ $t("banner.uploadKml") }}</a>
       </li>
       <li>
-        <a href="#" @click.stop="toggleMeasure">{{$t("banner.measure")}}</a>
+        <a href="#" @click.stop="toggleMeasure">{{ $t("banner.measure") }}</a>
       </li>
       <li v-if="printURL">
         <a href="#" @click.stop="printMap">PDF</a>
       </li>
     </ul>
-    <file-drop :show=showUpload @disable="disableUpload"></file-drop>
-    <login-modal :show=showLogin @disable="showLoginDialog(false)"></login-modal>
+    <file-drop :show="showUpload" @disable="disableUpload" />
+    <login-modal :show="showLogin" @disable="showLoginDialog(false)" />
   </div>
 </template>
 
@@ -61,6 +78,10 @@ export default {
     }
   },
   methods: {
+    computed: mapGetters([
+      'activeLayers',
+      'activeContexts'
+    ]),
     setLanguage(lang) {
       Vue.i18n.load(lang, `static/configuration/locale/${lang}.json`).then((a) => {
         Vue.i18n.set(lang)
@@ -124,11 +145,7 @@ export default {
       }
       request.send(`spec=${encodeURIComponent(JSON.stringify(printRequest))}`)
     }
-  },
-  computed: mapGetters([
-    'activeLayers',
-    'activeContexts'
-  ])
+  }
 }
 </script>
 

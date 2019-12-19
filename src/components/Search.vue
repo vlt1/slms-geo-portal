@@ -96,9 +96,9 @@ export default {
           }, this)
         }
       })
-      .catch(err => {
-        alert('Error WFS\n' + err)
-      })
+        .catch(err => {
+          alert('Error WFS\n' + err)
+        })
     }
   },
   components: {
