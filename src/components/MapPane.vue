@@ -9,6 +9,8 @@ import { mapGetters, mapState } from 'vuex'
 
 import map from '../map'
 import OLProperty from 'ol/layer/Property'
+import OLGoogleMaps from 'olgm/OLGoogleMaps'
+import GoogleLayer from 'olgm/layer/Google'
 
 const olLayers = {}
 
@@ -24,10 +26,21 @@ export default {
 
       layers.forEach(layerConfig => {
         try {
-          const olLayer = OlLayerFactory.createOlLayer(layerConfig, Vue.i18n.locale())
-          if (olLayer) {
-            olLayers[layerConfig.id] = olLayer
-            map.addLayer(olLayer)
+          if (layerConfig.type === 'google') {
+            const olGM = new OLGoogleMaps({
+              map: map
+            })
+            olLayers[layerConfig.id] = olGM
+            // This dummy layer tells Google Maps to switch to its default map type
+            const googleLayer = new GoogleLayer()
+            map.addLayer(googleLayer)
+            olGM.activate()
+          } else {
+            const olLayer = OlLayerFactory.createOlLayer(layerConfig, Vue.i18n.locale())
+            if (olLayer) {
+              olLayers[layerConfig.id] = olLayer
+              map.addLayer(olLayer)
+            }
           }
         } catch (e) {
           console.log(e)
@@ -49,8 +62,13 @@ export default {
     },
 
     activeLayers(activeLayers) {
-      this.layers.forEach(l =>
-        olLayers[l.id].setVisible(l.visible && activeLayers.some(a => a.id === l.id))
+      this.layers.forEach(l => {
+        if (l.type === 'google') {
+          activeLayers.some(a => a.id === l.id) ? olLayers[l.id].activate() : olLayers[l.id].deactivate()
+        } else {
+          olLayers[l.id].setVisible(l.visible && activeLayers.some(a => a.id === l.id))
+        }
+      }
       )
     },
 
@@ -70,7 +88,8 @@ export default {
         Object.values(OLProperty)
         .filter(p => context.hasOwnProperty(p))
         .forEach(p => {
-          context.layers.forEach(l => olLayers[l.id].set(p, context[p]))
+          context.layers.filter(l => l.type !== 'google')
+                    .forEach(l => olLayers[l.id].set(p, context[p]))
         })
       })
     }
