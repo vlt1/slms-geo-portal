@@ -28,14 +28,14 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/gs': {
-        target: 'http://rdc-snsf.org/diss_geoserver/',
+      '/geoserver': {
+        target: 'https://gonini.org/geoserver/',
         changeOrigin: true,
-        pathRewrite: { '^/gs': '' }
+        pathRewrite: { '^/geoserver': '' }
       },
       '/charts': { target: 'http://www.rdc-snsf.org/portal/static/data/', changeOrigin: true },
       '/api': { target: 'http://localhost:3001', changeOrigin: true },
-      '/geoserver/pdf': { target: 'http://rdc-snsf.org/', changeOrigin: true }
+      '/geoserver/pdf': { target: 'https://gonini.org/', changeOrigin: true }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
