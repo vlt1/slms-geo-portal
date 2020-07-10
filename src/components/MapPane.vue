@@ -7,7 +7,6 @@ import OlLayerFactory from '../olLayerFactory'
 import Vue from 'vue'
 import { mapGetters, mapState } from 'vuex'
 
-import map from '../map'
 import OLProperty from 'ol/layer/Property'
 
 const olLayers = {}
@@ -15,19 +14,22 @@ const olLayers = {}
 export default {
   name: 'mapPane',
   mounted() {
-    map.setTarget('map')
+    this.map.setTarget('map')
+  },
+  props: {
+    map: Object
   },
   watch: {
     layers(layers) {
       // Remove all layers if any, needed when sorting layers through the admin UI
-      map.getLayers().clear()
+      this.map.getLayers().clear()
 
       layers.forEach(layerConfig => {
         try {
           const olLayer = OlLayerFactory.createOlLayer(layerConfig, Vue.i18n.locale())
           if (olLayer) {
             olLayers[layerConfig.id] = olLayer
-            map.addLayer(olLayer)
+            this.map.addLayer(olLayer)
           }
         } catch (e) {
           console.log(e)

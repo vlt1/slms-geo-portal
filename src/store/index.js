@@ -30,6 +30,7 @@ const state = {
   layers: [],
   contexts: [],
   groups: null,
+  annotationsGeoJSON: null,
   layerInfo: null, // a modal with the file content is shown when not null
   contextsTimes: [],
   kmlOverlay: null,
@@ -193,6 +194,10 @@ const mutations = {
     })
 
     setContextsTimes(state)
+  },
+
+  set_annotations_geojson(state, { geojson }) {
+    state.annotationsGeoJSON = geojson
   }
 }
 
